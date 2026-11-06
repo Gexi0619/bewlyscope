@@ -43,6 +43,10 @@ window.addEventListener("load", function() {
         videoProfileCard = new VideoProfileCard();
         this.document.addEventListener("mouseover", showProfileDebounce);
 
+        // #bewly can be mounted after this point, and can be recreated later
+        hookBewlyRoot();
+        new MutationObserver(hookBewlyRoot).observe(document.body, {childList: true});
+
         if (biliScopeOptions.enableIpLabel) {
             s = document.createElement('script');
             s.src = chrome.runtime.getURL('scripts/sitescripts/labelip.js');

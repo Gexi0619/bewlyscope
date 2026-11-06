@@ -22,6 +22,7 @@
         "scripts/ui.js",
         "scripts/videoui.js",
         "scripts/biliscope.js",
+        "scripts/bewlycompat.js",
         "scripts/load.js",
         "scripts/rollbackfeedcard.js"
       ],

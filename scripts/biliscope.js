@@ -32,7 +32,9 @@ function showProfile(event, targetData) {
         const target = targetData["target"];
         const videoId = target.getAttribute("biliscope-videoid");
 
-        if (biliScopeOptions.enableVideoTag && videoTagManager) {
+        // The tag styles can't reach into a shadow root
+        if (biliScopeOptions.enableVideoTag && videoTagManager &&
+            !(target.getRootNode() instanceof ShadowRoot)) {
             const updated = videoTagManager.updateTarget(target);
             videoTagManager.updateVideoId(videoId);
             if (updated) {
@@ -59,9 +61,15 @@ function showProfile(event, targetData) {
     }
 }
 
-function showProfileDebounce(event) {
+function showProfileDebounce(event, startEl = event.target) {
+    // Entering #bewly from outside also reaches the document listener, after the
+    // shadow root listener has started the timer. Don't let it cancel that timer.
+    if (startEl.id === "bewly") {
+        return;
+    }
+
     clearTimeout(showProfileDebounce.timer);
-    let targetData = getTarget(event.target);
+    let targetData = getTarget(startEl);
     if (!targetData) {
         return;
     }
